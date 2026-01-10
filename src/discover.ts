@@ -125,16 +125,21 @@ async function main() {
       if (response.stop_reason === 'end_turn' && !hasToolUse) {
         continueLoop = false;
 
-        // Extract and save generated files
-        const lastAssistant = messages[messages.length - 1];
-        if (lastAssistant.role === 'assistant' && Array.isArray(lastAssistant.content)) {
-          for (const block of lastAssistant.content) {
-            if (block.type === 'text') {
-              const extracted = extractFiles(block.text);
-              saveFiles(extracted, config.outputDir, config.formName);
+        // Extract and save generated files from ALL assistant messages
+        // (Claude may split long responses across multiple turns)
+        let allAssistantText = '';
+        for (const msg of messages) {
+          if (msg.role === 'assistant' && Array.isArray(msg.content)) {
+            for (const block of msg.content) {
+              if (block.type === 'text') {
+                allAssistantText += block.text + '\n';
+              }
             }
           }
         }
+
+        const extracted = extractFiles(allAssistantText);
+        saveFiles(extracted, config.outputDir, config.formName);
       }
     }
 
