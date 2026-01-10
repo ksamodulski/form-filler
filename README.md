@@ -8,6 +8,7 @@ Uses Playwright MCP + Anthropic Claude to explore forms, identify fields, and ge
 
 ```bash
 npm install
+npx playwright install chromium
 ```
 
 Create `.env` from the example:
