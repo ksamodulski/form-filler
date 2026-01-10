@@ -1,0 +1,22 @@
+{
+  "name": "form-filler",
+  "version": "1.0.0",
+  "description": "AI-powered form testing framework using Playwright MCP",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "discover": "npx tsx src/discover.ts",
+    "test": "npx playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^25.0.5",
+    "dotenv": "^17.2.3",
+    "tsx": "^4.19.0"
+  }
+}
