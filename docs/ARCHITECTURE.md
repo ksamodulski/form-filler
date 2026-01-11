@@ -575,12 +575,40 @@ import { phone, email, name } from '../helpers/test-data';
 return { phone: phone(), email: email(), firstName: name.first() };
 ```
 
+### 9.3 Batch Discovery (Planned)
+
+Discover multiple forms in a single run, useful for systems with many form variations.
+
+**Form Identifier Model:**
+
+| Concept | Description | Example |
+|---------|-------------|---------|
+| **Type Name** | Data model being captured | `blood-pressure`, `patient`, `lab-result` |
+| **Profile** | Defaults and value sets for the type | `adult`, `pediatric`, `inpatient` |
+| **Form Tag** | Specific form variant | `detailed`, `quick`, `summary` |
+
+**Workflow:**
+
+1. Read form definitions from JSON configuration
+2. For each form: Playwright-based seed navigates to form via UI (login → select type → select profile → select form tag)
+3. Save browser state (cookies, localStorage) for MCP handoff
+4. Run discovery, generate test files
+5. Verify generated test passes
+6. Commit passing tests, report failures for review
+
+**Key Design Decisions:**
+
+- Seeds use native Playwright API (not MCP) for familiar syntax and easier debugging
+- UI navigation is consistent across all form types
+- Generated files named: `{typeName}-{profile}-{formTag}.spec.ts`
+
 ---
 
-*Document Version: 5.0*
+*Document Version: 5.1*
 *Status: MVP Complete — Simplified architecture*
 *Changes:*
 - *v4.0: Discovery generates Playwright test code directly, no intermediate schema*
 - *v4.1: Added locator quality standards, optional component helpers extension*
 - *v4.2: Updated to reflect actual MVP implementation (seeds, .env config, file structure)*
 - *v5.0: Simplified architecture — removed Test Store, Test Runner, Web Dashboard (use Git + Jenkins instead)*
+- *v5.1: Added Batch Discovery extension with Playwright-based seeds and FormIdentifier model*
