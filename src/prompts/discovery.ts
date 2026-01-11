@@ -13,12 +13,32 @@ Target URL: ${formUrl}
 2. Take a snapshot to see the form structure
 3. Quickly test each form field type ONCE (one text input, one radio, one dropdown, etc.)
 4. Fill ALL required fields and submit the form to verify successful submission
-5. IMMEDIATELY generate the test files using the locators from MCP responses
+5. Generate the test files using the best available locators (see Locator Quality below)
+
+## Locator Quality Guidelines
+
+When generating test code, prefer accessible locators in this priority order:
+
+1. \`page.getByRole('button', { name: 'Submit' })\` - Best for buttons, links, checkboxes, radios
+2. \`page.getByLabel('Email')\` - Best for form inputs with visible labels
+3. \`page.getByPlaceholder('Enter email')\` - When input has placeholder but no label
+4. \`page.getByText('Welcome')\` - For text content verification
+
+Use ID or CSS selectors only when accessible locators are not available for an element.
+
+**Web-First Assertions (auto-waiting):**
+\`\`\`typescript
+// Correct - waits and retries
+await expect(page.getByText('Success')).toBeVisible();
+
+// Avoid - fails immediately
+expect(await page.getByText('Success').isVisible()).toBe(true);
+\`\`\`
 
 ## CRITICAL: Be Efficient
 - Do NOT exhaustively test every field - just discover the locator patterns
 - After ~10 interactions, you MUST stop exploring and generate the output
-- Use the EXACT locators returned by MCP tool responses
+- Use accessible locators when elements have labels, roles, or text; otherwise use MCP locators
 - If a click times out, try an alternative approach ONCE, then move on
 
 ## Required Tests (NO MORE THAN 3 tests)
