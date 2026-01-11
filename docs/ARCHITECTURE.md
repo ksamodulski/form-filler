@@ -83,10 +83,13 @@ Each form is identified by its URL and a human-readable name. The name is used f
 
 **Workflow:**
 1. Run `npm run discover` → generates `.spec.ts` and `.data.ts`
-2. Review generated code, run locally to verify
-3. Commit to git, create PR
-4. Jenkins runs tests on merge
-5. If tests fail later (form changed), re-run discovery
+2. Review generated code
+3. Run test locally (`npx playwright test {form}.spec.ts`) to verify it passes
+4. Commit to git, create PR
+5. Jenkins runs tests on merge
+6. If tests fail later → investigate:
+   - Form changed → re-run discovery
+   - Bug in system under test → file bug report
 
 **Artifacts per form:**
 - `{form-id}.spec.ts` — The Playwright test file (human-editable)
